@@ -23,6 +23,8 @@ app.get('/', (req, res) => {
 app.post('/', (req, res) => {
 	let x = req.body.x;
 	let y = req.body.y;
+
+	// check for addition operation
 	if (req.body.operation_type === 'addition') {
 		const result = x + y;
 		console.log(typeof String);
@@ -34,6 +36,7 @@ app.post('/', (req, res) => {
 		});
 	}
 
+	// check for subtraction operation
 	if (req.body.operation_type === 'subtraction') {
 		const result = x - y;
 
@@ -44,6 +47,7 @@ app.post('/', (req, res) => {
 		});
 	}
 
+	// check for multiplication operation
 	if (req.body.operation_type === 'multiplication') {
 		const result = x * y;
 
@@ -64,20 +68,56 @@ app.post('/', (req, res) => {
 		console.log(string_array);
 		let x = req.body.x;
 		let y = req.body.y;
-		if (string_array.includes('plus' || 'add' || 'adding')) {
+		if (
+			string_array.includes('add') ||
+			string_array.includes('plus') ||
+			string_array.includes('adding') ||
+			string_array.includes('sum')
+		) {
+			console.log('yes');
 			const result = x + y;
 			return res.status(200).json({
 				slackUsername: 'geraldlouisugwunna',
 				result,
-				operation_type: req.body.operation_type,
+				operation_type: 'addition',
+			});
+		} else if (
+			string_array.includes('minus') ||
+			string_array.includes('subtract') ||
+			string_array.includes('remove') ||
+			string_array.includes('subtracting')
+		) {
+			console.log('yes');
+			const result = x - y;
+			return res.status(200).json({
+				slackUsername: 'geraldlouisugwunna',
+				result,
+				operation_type: 'subtraction',
+			});
+		} else if (
+			string_array.includes('multiply') ||
+			string_array.includes('times') ||
+			string_array.includes('product') ||
+			string_array.includes('multiplying')
+		) {
+			console.log('yes');
+			const result = x * y;
+			return res.status(200).json({
+				slackUsername: 'geraldlouisugwunna',
+				result,
+				operation_type: 'multiplication',
+			});
+		} else {
+			return res.status(400).json({
+				success: 'false',
+				message: 'bad request',
 			});
 		}
 	}
 
-	res.status(200).json({
-		slackUsername: 'geraldlouisugwunna',
-		result: 'answer',
-		operation_type: 'operator',
+	res.status(400).json({
+		success: 'false',
+		message: 'bad request',
 	});
 });
 
